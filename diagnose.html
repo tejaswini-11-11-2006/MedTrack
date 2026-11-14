@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Diagnosis for {{ appt.PatientName }}</h2>
+<p>{{ appt.AppointmentDate }} at {{ appt.AppointmentTime }} | Reason: {{ appt.Reason }}</p>
+<form method="POST">
+    <label>Diagnosis</label><textarea name="diagnosis" rows="3" required></textarea>
+    <label>Prescription</label><textarea name="prescription" rows="3" required></textarea>
+    <label>Notes</label><textarea name="notes" rows="3"></textarea>
+    <button type="submit">Submit Report</button>
+</form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Appointments</h2>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Doctor</th>
+        <th>Reason</th>
+        <th>Status</th>
+    </tr>
+    {% for a in appointments %}
+    <tr>
+        <td>{{ a.AppointmentDate }}</td>
+        <td>{{ a.AppointmentTime }}</td>
+        <td>{{ a.DoctorName }}</td>
+        <td>{{ a.Reason }}</td>
+        <td>{{ a.Status }}</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="5">No appointments yet.</td>
+    </tr>
+    {% endfor %}
+</table>
+<p><a href="{{ url_for('book') }}">Book a new appointment</a></p>
+{% endblock %}

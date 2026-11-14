@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Medical History: {{ patient_name }}</h2>
+{% for r in records %}
+<div style="border:1px solid #ddd;padding:12px;margin-bottom:12px;border-radius:6px">
+    <b>{{ r.CreatedAt[:10] }}</b> by {{ r.DoctorName }}<br>
+    <b>Diagnosis:</b> {{ r.Diagnosis }}<br>
+    <b>Prescription:</b> {{ r.Prescription }}<br>
+    <b>Notes:</b> {{ r.Notes }}
+</div>
+{% else %}
+<p>No records yet.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% set pending = appointments|selectattr('Status','equalto','Booked')|list %}
+{% set done = appointments|selectattr('Status','equalto','Completed')|list %}
+{% set patient_count = appointments|map(attribute='PatientID')|unique|list|length %}
+
+<div class="dash-header">
+    <div>
+        <h2>{{ session.name }}</h2>
+        <p>Doctor dashboard</p>
+    </div>
+</div>
+
+<div class="cards">
+    <div class="card">
+        <div class="num">{{ appointments|length }}</div>
+        <div class="label">Total Appointments</div>
+    </div>
+    <div class="card orange">
+        <div class="num">{{ pending|length }}</div>
+        <div class="label">Pending Diagnosis</div>
+    </div>
+    <div class="card green">
+        <div class="num">{{ done|length }}</div>
+        <div class="label">Completed</div>
+    </div>
+    <div class="card purple">
+        <div class="num">{{ patient_count }}</div>
+        <div class="label">Unique Patients</div>
+    </div>
+</div>
+
+<h3 class="section-title">Pending Appointments</h3>
+<div class="table-wrap">
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Patient</th>
+            <th>Reason</th>
+            <th>Action</th>
+        </tr>
+        {% for a in pending %}
+        <tr>
+            <td>{{ a.AppointmentDate }}</td>
+            <td>{{ a.AppointmentTime }}</td>
+            <td>{{ a.PatientName }}</td>
+            <td>{{ a.Reason }}</td>
+            <td>
+                <a class="btn btn-sm" href="{{ url_for('diagnose', appointment_id=a.AppointmentID) }}">Diagnose</a>
+                <a class="btn btn-sm btn-outline"
+                    href="{{ url_for('patient_history_for_doctor', patient_id=a.PatientID) }}">History</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5" class="empty">No pending appointments.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<h3 class="section-title">Completed Appointments</h3>
+<div class="table-wrap">
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Patient</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for a in done %}
+        <tr>
+            <td>{{ a.AppointmentDate }}</td>
+            <td>{{ a.AppointmentTime }}</td>
+            <td>{{ a.PatientName }}</td>
+            <td><span class="badge badge-Completed">Completed</span></td>
+            <td><a class="btn btn-sm btn-outline"
+                    href="{{ url_for('patient_history_for_doctor', patient_id=a.PatientID) }}">History</a></td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5" class="empty">No completed appointments yet.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
